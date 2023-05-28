@@ -1,4 +1,8 @@
 pipeline {
+    environment {
+		registry = "sumeetcloudengineer/zappyhire"
+		registryCredentials = 'docker-credentials'
+	}
     agent any
 
     stages {
@@ -19,6 +23,16 @@ pipeline {
                 sh 'docker rmi zappyhire-project:latest'
                 sh 'docker build -t zappyhire-project:latest .'
                 sh 'docker run -p 80:80 --name zappyhire-container -d zappyhire-project:latest'
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                script {
+					docker.withRegistry('', registryCredentials) {
+						image.push()
+						image.push('latest')
+					}
+				}
             }
         }
     }
