@@ -18,7 +18,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                scripts{
+                //scripts{
                     //if(sh 'docker ps -a | grep "80"'){
                     sh 'docker stop zappyhire-container'
                     sh 'docker rm zappyhire-container'
@@ -31,7 +31,7 @@ pipeline {
                     //sh 'docker build -t zappyhire-project:${{BUILD_NUMBER}} .'
                     //sh 'docker run -p 80:80 --name zappyhire-container_${{BUILD_NUMBER}} -d zappyhire-project:${{BUILD_NUMBER}}'
                     //}
-                }
+                //}
             }
         }
         stage('Push Docker Image') {
