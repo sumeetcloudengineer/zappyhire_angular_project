@@ -27,13 +27,10 @@ pipeline {
         }
         stage('Push Docker Image') {
             steps {
-                script {
-					docker.withRegistry('', registryCredentials) {
-						image.push()
-						image.push('latest')
-					}
-				}
+                sh 'docker tag zappyhire-project sumeetcloudengineer/zappyhire-docker-image'
+                sh 'docker push sumeetcloudengineer/zappyhire-docker-image'
             }
         }
+        
     }
 }
