@@ -18,11 +18,20 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh 'docker stop zappyhire-container'
-                sh 'docker rm zappyhire-container'
-                sh 'docker rmi zappyhire-project:latest'
-                sh 'docker build -t zappyhire-project:latest .'
-                sh 'docker run -p 80:80 --name zappyhire-container -d zappyhire-project:latest'
+                scripts{
+                    //if(sh 'docker ps -a | grep "80"'){
+                    sh 'docker stop zappyhire-container'
+                    sh 'docker rm zappyhire-container'
+                    sh 'docker rmi zappyhire-project:latest'
+                    sh 'docker build -t zappyhire-project:${{BUILD_NUMBER}} .'
+                    sh 'docker run -p 80:80 --name zappyhire-container_${{BUILD_NUMBER}} -d zappyhire-project:${{BUILD_NUMBER}}'
+                    //}
+                    //else 
+                    //{
+                    //sh 'docker build -t zappyhire-project:${{BUILD_NUMBER}} .'
+                    //sh 'docker run -p 80:80 --name zappyhire-container_${{BUILD_NUMBER}} -d zappyhire-project:${{BUILD_NUMBER}}'
+                    //}
+                }
             }
         }
         stage('Push Docker Image') {
@@ -31,6 +40,10 @@ pipeline {
                 sh 'docker push sumeetcloudengineer/zappyhire-docker-image'
             }
         }
-        
+    post { 
+        always { 
+            cleanWs()
+        }
+    }
     }
 }
