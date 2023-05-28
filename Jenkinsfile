@@ -40,10 +40,10 @@ pipeline {
                 sh 'docker push sumeetcloudengineer/zappyhire-docker-image'
             }
         }
+    }
     post { 
         always { 
             cleanWs()
         }
-    }
     }
 }
